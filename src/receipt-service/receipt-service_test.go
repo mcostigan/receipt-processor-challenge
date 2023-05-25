@@ -79,7 +79,7 @@ func TestReceiptService_GetPoints_Subsequent(t *testing.T) {
 
 	initialPoints := 50
 	// return receipt with nil points
-	receipt := &model.Receipt{points: &initialPoints}
+	receipt := &model.Receipt{Points: &initialPoints}
 	mockRepo.On("Get", "test").Return(receipt, nil)
 	mockRepo.On("Set", receipt).Return(receipt)
 
@@ -99,7 +99,7 @@ func TestReceiptService_GetPoints_BadId(t *testing.T) {
 
 	service := &ReceiptService{mockRulesService, mockRepo}
 
-	mockRepo.On("Get", "test").Return(nil, &receipt_repo.NoReceiptFoundError{"test"})
+	mockRepo.On("Get", "test").Return(nil, &receipt_repo.NoReceiptFoundError{Id: "test"})
 
 	_, err := service.GetPoints("test")
 

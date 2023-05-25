@@ -19,11 +19,11 @@ func NewInMemoryReceiptRepo() *InMemoryReceiptRepo {
 }
 
 type NoReceiptFoundError struct {
-	id string
+	Id string
 }
 
 func (err *NoReceiptFoundError) Error() string {
-	return fmt.Sprintf("Receipt with id %s does not exist", err.id)
+	return fmt.Sprintf("Receipt with id %s does not exist", err.Id)
 }
 
 func (repo *InMemoryReceiptRepo) Get(id string) (*model.Receipt, error) {
