@@ -1,8 +1,10 @@
-package main
+package receipt_service
 
 import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"receipt-processor-challeng/src/model"
+	"receipt-processor-challeng/src/receipt-repo"
 	"testing"
 )
 
@@ -10,24 +12,24 @@ type MockRepo struct {
 	mock.Mock
 }
 
-func (r *MockRepo) Get(id string) (*Receipt, error) {
+func (r *MockRepo) Get(id string) (*model.Receipt, error) {
 	args := r.Called(id)
 	if args.Error(1) != nil {
 		return nil, args.Error(1)
 	}
-	return args.Get(0).(*Receipt), args.Error(1)
+	return args.Get(0).(*model.Receipt), args.Error(1)
 }
 
-func (r *MockRepo) Set(receipt *Receipt) *Receipt {
+func (r *MockRepo) Set(receipt *model.Receipt) *model.Receipt {
 	args := r.Called(receipt)
-	return args.Get(0).(*Receipt)
+	return args.Get(0).(*model.Receipt)
 }
 
 type MockRulesService struct {
 	mock.Mock
 }
 
-func (service *MockRulesService) PointReceipt(r *Receipt) int {
+func (service *MockRulesService) PointReceipt(r *model.Receipt) int {
 	args := service.Called(r)
 	return args.Get(0).(int)
 }
@@ -38,7 +40,7 @@ func TestReceiptService_ProcessReceipt(t *testing.T) {
 
 	service := &ReceiptService{mockRulesService, mockRepo}
 
-	receipt := &Receipt{}
+	receipt := &model.Receipt{}
 	mockRepo.On("Set", receipt).Return(receipt)
 
 	service.ProcessReceipt(receipt)
@@ -55,7 +57,7 @@ func TestReceiptService_GetPoints_FirstTime(t *testing.T) {
 	service := &ReceiptService{mockRulesService, mockRepo}
 
 	// return receipt with nil points
-	receipt := &Receipt{}
+	receipt := &model.Receipt{}
 	mockRepo.On("Get", "test").Return(receipt, nil)
 	mockRepo.On("Set", receipt).Return(receipt)
 
@@ -77,7 +79,7 @@ func TestReceiptService_GetPoints_Subsequent(t *testing.T) {
 
 	initialPoints := 50
 	// return receipt with nil points
-	receipt := &Receipt{points: &initialPoints}
+	receipt := &model.Receipt{points: &initialPoints}
 	mockRepo.On("Get", "test").Return(receipt, nil)
 	mockRepo.On("Set", receipt).Return(receipt)
 
@@ -97,7 +99,7 @@ func TestReceiptService_GetPoints_BadId(t *testing.T) {
 
 	service := &ReceiptService{mockRulesService, mockRepo}
 
-	mockRepo.On("Get", "test").Return(nil, &NoReceiptFoundError{"test"})
+	mockRepo.On("Get", "test").Return(nil, &receipt_repo.NoReceiptFoundError{"test"})
 
 	_, err := service.GetPoints("test")
 

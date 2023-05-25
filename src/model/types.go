@@ -1,4 +1,4 @@
-package main
+package model
 
 import (
 	"strconv"
@@ -13,7 +13,7 @@ type Receipt struct {
 	PurchaseTime Time         `json:"purchaseTime"`
 	Total        PriceInCents `json:"total"`
 	Items        []Item       `json:"items"`
-	points       *int
+	Points       *int
 }
 
 type Item struct {
@@ -30,7 +30,7 @@ type GetPointsReturn struct {
 }
 
 type PriceInCents struct {
-	int
+	Cents int
 }
 
 type Date struct {

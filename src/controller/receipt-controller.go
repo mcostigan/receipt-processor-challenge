@@ -1,22 +1,25 @@
-package main
+package controller
 
 import (
 	"encoding/json"
 	_ "encoding/json"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"receipt-processor-challeng/src/model"
+	"receipt-processor-challeng/src/receipt-repo"
+	"receipt-processor-challeng/src/receipt-service"
 )
 
 type ReceiptController struct {
-	receiptService *ReceiptService
+	receiptService *receipt_service.ReceiptService
 }
 
 func NewReceiptController() *ReceiptController {
-	return &ReceiptController{receiptService: NewReceiptService()}
+	return &ReceiptController{receiptService: receipt_service.NewReceiptService()}
 }
 
-func (controller *ReceiptController) handleProcessReceipts(c *gin.Context) {
-	var newReceipt Receipt
+func (controller *ReceiptController) HandleProcessReceipts(c *gin.Context) {
+	var newReceipt model.Receipt
 
 	if err := json.NewDecoder(c.Request.Body).Decode(&newReceipt); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
@@ -25,17 +28,17 @@ func (controller *ReceiptController) handleProcessReceipts(c *gin.Context) {
 
 	id := controller.receiptService.ProcessReceipt(&newReceipt)
 
-	c.IndentedJSON(http.StatusOK, ProcessReceiptReturn{id})
+	c.IndentedJSON(http.StatusOK, model.ProcessReceiptReturn{id})
 }
 
-func (controller *ReceiptController) handleGetPoints(c *gin.Context) {
+func (controller *ReceiptController) HandleGetPoints(c *gin.Context) {
 	id := c.Param("receiptId")
 
 	points, err := controller.receiptService.GetPoints(id)
 
 	if err != nil {
 		switch err.(type) {
-		case *NoReceiptFoundError:
+		case *receipt_repo.NoReceiptFoundError:
 			c.IndentedJSON(http.StatusNotFound, err.Error())
 			break
 		default:
@@ -45,5 +48,5 @@ func (controller *ReceiptController) handleGetPoints(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, GetPointsReturn{points})
+	c.IndentedJSON(http.StatusOK, model.GetPointsReturn{points})
 }

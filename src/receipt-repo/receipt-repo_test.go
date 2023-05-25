@@ -1,7 +1,8 @@
-package main
+package receipt_repo
 
 import (
 	"github.com/stretchr/testify/assert"
+	"receipt-processor-challeng/src/model"
 	"testing"
 )
 
@@ -14,7 +15,7 @@ func TestInMemoryReceiptRepo_Get_ThrowsError(t *testing.T) {
 }
 
 func TestInMemoryReceiptRepo_Get_ReturnsReceipt(t *testing.T) {
-	repo := InMemoryReceiptRepo{map[string]*Receipt{"test": {Id: "test"}}}
+	repo := InMemoryReceiptRepo{map[string]*model.Receipt{"test": {Id: "test"}}}
 
 	r, err := repo.Get("test")
 
@@ -25,24 +26,24 @@ func TestInMemoryReceiptRepo_Get_ReturnsReceipt(t *testing.T) {
 func TestInMemoryReceiptRepo_Set_NewReceipt(t *testing.T) {
 	repo := NewInMemoryReceiptRepo()
 
-	r := repo.Set(&Receipt{Id: "test"})
+	r := repo.Set(&model.Receipt{Id: "test"})
 
 	assert.Equal(t, r.Id, "test")
 	assert.Equal(t, 1, len(repo.receipts))
 }
 
 func TestInMemoryReceiptRepo_Set_ExistingReceipt(t *testing.T) {
-	repo := InMemoryReceiptRepo{map[string]*Receipt{"test": {Id: "test", points: nil}}}
+	repo := InMemoryReceiptRepo{map[string]*model.Receipt{"test": {Id: "test", Points: nil}}}
 
 	r, _ := repo.Get("test")
 	points := 5
-	r.points = &points
+	r.Points = &points
 
 	repo.Set(r)
 
 	r, _ = repo.Get("test")
 
 	assert.Equal(t, r.Id, "test")
-	assert.Equal(t, r.points, &points)
+	assert.Equal(t, r.Points, &points)
 	assert.Equal(t, 1, len(repo.receipts))
 }

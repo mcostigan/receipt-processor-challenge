@@ -1,7 +1,11 @@
-package main
+package rules
+
+import (
+	"receipt-processor-challeng/src/model"
+)
 
 type RulesServiceInterface interface {
-	PointReceipt(receipt *Receipt) int
+	PointReceipt(receipt *model.Receipt) int
 }
 
 type RulesService struct {
@@ -19,7 +23,7 @@ func NewRulesService() *RulesService {
 		&TwoPMTo4PMRule{}}}
 }
 
-func (service *RulesService) PointReceipt(receipt *Receipt) int {
+func (service *RulesService) PointReceipt(receipt *model.Receipt) int {
 	points := 0
 	for _, rule := range service.rules {
 		points += rule.evaluate(receipt)

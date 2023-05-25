@@ -1,18 +1,21 @@
-package main
+package receipt_repo
 
-import "fmt"
+import (
+	"fmt"
+	"receipt-processor-challeng/src/model"
+)
 
 type ReceiptRepo interface {
-	Get(id string) (*Receipt, error)
-	Set(receipt *Receipt) *Receipt
+	Get(id string) (*model.Receipt, error)
+	Set(receipt *model.Receipt) *model.Receipt
 }
 
 type InMemoryReceiptRepo struct {
-	receipts map[string]*Receipt
+	receipts map[string]*model.Receipt
 }
 
 func NewInMemoryReceiptRepo() *InMemoryReceiptRepo {
-	return &InMemoryReceiptRepo{map[string]*Receipt{}}
+	return &InMemoryReceiptRepo{map[string]*model.Receipt{}}
 }
 
 type NoReceiptFoundError struct {
@@ -23,7 +26,7 @@ func (err *NoReceiptFoundError) Error() string {
 	return fmt.Sprintf("Receipt with id %s does not exist", err.id)
 }
 
-func (repo *InMemoryReceiptRepo) Get(id string) (*Receipt, error) {
+func (repo *InMemoryReceiptRepo) Get(id string) (*model.Receipt, error) {
 	receipt, ok := repo.receipts[id]
 
 	if !ok {
@@ -32,7 +35,7 @@ func (repo *InMemoryReceiptRepo) Get(id string) (*Receipt, error) {
 	return receipt, nil
 }
 
-func (repo *InMemoryReceiptRepo) Set(receipt *Receipt) *Receipt {
+func (repo *InMemoryReceiptRepo) Set(receipt *model.Receipt) *model.Receipt {
 	repo.receipts[receipt.Id] = receipt
 	return receipt
 }

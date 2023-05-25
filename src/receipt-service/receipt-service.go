@@ -1,21 +1,26 @@
-package main
+package receipt_service
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+	"receipt-processor-challeng/src/model"
+	"receipt-processor-challeng/src/receipt-repo"
+	"receipt-processor-challeng/src/rules"
+)
 
 type ReceiptService struct {
-	rulesService RulesServiceInterface
-	receiptRepo  ReceiptRepo
+	rulesService rules.RulesServiceInterface
+	receiptRepo  receipt_repo.ReceiptRepo
 }
 
 func NewReceiptService() *ReceiptService {
 	return &ReceiptService{
-		rulesService: NewRulesService(),
-		receiptRepo:  NewInMemoryReceiptRepo(),
+		rulesService: rules.NewRulesService(),
+		receiptRepo:  receipt_repo.NewInMemoryReceiptRepo(),
 	}
 }
 
 // ProcessReceipt Assigns a unique ID to the receipt and persists (via the repository)
-func (service *ReceiptService) ProcessReceipt(receipt *Receipt) string {
+func (service *ReceiptService) ProcessReceipt(receipt *model.Receipt) string {
 	id := uuid.NewString()
 	receipt.Id = id
 	service.receiptRepo.Set(receipt)
@@ -29,14 +34,14 @@ func (service *ReceiptService) GetPoints(id string) (int, error) {
 	}
 	// Only calculate the points one time
 	// After that, persist with the receipt object
-	if receipt.points == nil {
+	if receipt.Points == nil {
 		points := service.rulesService.PointReceipt(receipt)
-		receipt.points = &points
+		receipt.Points = &points
 
 		// This part isn't necessary with an in-memory data store
 		// But if the repo connected to another database, we would want to call a `save` procedure
 		service.receiptRepo.Set(receipt)
 	}
 
-	return *receipt.points, nil
+	return *receipt.Points, nil
 }
