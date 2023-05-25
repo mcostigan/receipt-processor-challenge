@@ -5,5 +5,6 @@ import (
 )
 
 func main() {
-	api.RunApi()
+	router := api.GetRouter()
+	router.Run("localhost:8080")
 }
