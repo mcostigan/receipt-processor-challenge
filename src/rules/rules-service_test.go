@@ -9,7 +9,7 @@ import (
 )
 
 func TestReceiptPointingExample1(t *testing.T) {
-	receiptJson, _ := os.Open("../examples/example-receipt-1.json")
+	receiptJson, _ := os.Open("../../examples/example-receipt-1.json")
 	defer receiptJson.Close()
 
 	var exampleReceipt model.Receipt
@@ -22,7 +22,7 @@ func TestReceiptPointingExample1(t *testing.T) {
 }
 
 func TestReceiptPointingExample2(t *testing.T) {
-	receiptJson, _ := os.Open("../examples/example-receipt-2.json")
+	receiptJson, _ := os.Open("../../examples/example-receipt-2.json")
 	defer receiptJson.Close()
 
 	var exampleReceipt model.Receipt

@@ -4,16 +4,16 @@ import (
 	"receipt-processor-challeng/src/model"
 )
 
-type RulesServiceInterface interface {
+type ServiceInterface interface {
 	PointReceipt(receipt *model.Receipt) int
 }
 
-type RulesService struct {
+type service struct {
 	rules []Rule
 }
 
-func NewRulesService() *RulesService {
-	return &RulesService{[]Rule{
+func NewRulesService() *service {
+	return &service{[]Rule{
 		&RetailerLengthRule{},
 		&RoundDollarAmountRule{},
 		&PointTwoFiveRule{},
@@ -23,7 +23,8 @@ func NewRulesService() *RulesService {
 		&TwoPMTo4PMRule{}}}
 }
 
-func (service *RulesService) PointReceipt(receipt *model.Receipt) int {
+// PointReceipt Find the total points earned on the receipt /**
+func (service *service) PointReceipt(receipt *model.Receipt) int {
 	points := 0
 	for _, rule := range service.rules {
 		points += rule.evaluate(receipt)

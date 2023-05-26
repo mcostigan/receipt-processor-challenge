@@ -1,4 +1,4 @@
-package controller
+package receipt_controller
 
 import (
 	"encoding/json"
@@ -10,15 +10,15 @@ import (
 	"receipt-processor-challeng/src/receipt-service"
 )
 
-type ReceiptController struct {
-	receiptService *receipt_service.ReceiptService
+type receiptController struct {
+	receiptService receipt_service.ReceiptService
 }
 
-func NewReceiptController() *ReceiptController {
-	return &ReceiptController{receiptService: receipt_service.NewReceiptService()}
+func NewReceiptController() *receiptController {
+	return &receiptController{receiptService: receipt_service.NewReceiptService()}
 }
 
-func (controller *ReceiptController) HandleProcessReceipts(c *gin.Context) {
+func (controller *receiptController) HandleProcessReceipts(c *gin.Context) {
 	var newReceipt model.Receipt
 
 	if err := json.NewDecoder(c.Request.Body).Decode(&newReceipt); err != nil {
@@ -31,7 +31,7 @@ func (controller *ReceiptController) HandleProcessReceipts(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, model.ProcessReceiptReturn{id})
 }
 
-func (controller *ReceiptController) HandleGetPoints(c *gin.Context) {
+func (controller *receiptController) HandleGetPoints(c *gin.Context) {
 	id := c.Param("receiptId")
 
 	points, err := controller.receiptService.GetPoints(id)

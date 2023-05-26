@@ -15,7 +15,7 @@ func TestInMemoryReceiptRepo_Get_ThrowsError(t *testing.T) {
 }
 
 func TestInMemoryReceiptRepo_Get_ReturnsReceipt(t *testing.T) {
-	repo := InMemoryReceiptRepo{map[string]*model.Receipt{"test": {Id: "test"}}}
+	repo := inMemoryReceiptRepo{map[string]*model.Receipt{"test": {Id: "test"}}}
 
 	r, err := repo.Get("test")
 
@@ -33,7 +33,7 @@ func TestInMemoryReceiptRepo_Set_NewReceipt(t *testing.T) {
 }
 
 func TestInMemoryReceiptRepo_Set_ExistingReceipt(t *testing.T) {
-	repo := InMemoryReceiptRepo{map[string]*model.Receipt{"test": {Id: "test", Points: nil}}}
+	repo := inMemoryReceiptRepo{map[string]*model.Receipt{"test": {Id: "test", Points: nil}}}
 
 	r, _ := repo.Get("test")
 	points := 5

@@ -10,12 +10,12 @@ type ReceiptRepo interface {
 	Set(receipt *model.Receipt) *model.Receipt
 }
 
-type InMemoryReceiptRepo struct {
+type inMemoryReceiptRepo struct {
 	receipts map[string]*model.Receipt
 }
 
-func NewInMemoryReceiptRepo() *InMemoryReceiptRepo {
-	return &InMemoryReceiptRepo{map[string]*model.Receipt{}}
+func NewInMemoryReceiptRepo() *inMemoryReceiptRepo {
+	return &inMemoryReceiptRepo{map[string]*model.Receipt{}}
 }
 
 type NoReceiptFoundError struct {
@@ -26,7 +26,9 @@ func (err *NoReceiptFoundError) Error() string {
 	return fmt.Sprintf("Receipt with id %s does not exist", err.Id)
 }
 
-func (repo *InMemoryReceiptRepo) Get(id string) (*model.Receipt, error) {
+// Get Searches the data store for a receipt with a given id and returns.
+// Throws an exception if no such id exists
+func (repo *inMemoryReceiptRepo) Get(id string) (*model.Receipt, error) {
 	receipt, ok := repo.receipts[id]
 
 	if !ok {
@@ -35,7 +37,10 @@ func (repo *InMemoryReceiptRepo) Get(id string) (*model.Receipt, error) {
 	return receipt, nil
 }
 
-func (repo *InMemoryReceiptRepo) Set(receipt *model.Receipt) *model.Receipt {
+// TODO throw error if Id is null
+
+// Set Saves an instance of receipt, keyed on its id
+func (repo *inMemoryReceiptRepo) Set(receipt *model.Receipt) *model.Receipt {
 	repo.receipts[receipt.Id] = receipt
 	return receipt
 }

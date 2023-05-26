@@ -38,7 +38,7 @@ func TestReceiptService_ProcessReceipt(t *testing.T) {
 	mockRepo := &MockRepo{}
 	mockRulesService := &MockRulesService{}
 
-	service := &ReceiptService{mockRulesService, mockRepo}
+	service := &service{mockRulesService, mockRepo}
 
 	receipt := &model.Receipt{}
 	mockRepo.On("Set", receipt).Return(receipt)
@@ -54,7 +54,7 @@ func TestReceiptService_GetPoints_FirstTime(t *testing.T) {
 	mockRepo := &MockRepo{}
 	mockRulesService := &MockRulesService{}
 
-	service := &ReceiptService{mockRulesService, mockRepo}
+	service := &service{mockRulesService, mockRepo}
 
 	// return receipt with nil points
 	receipt := &model.Receipt{}
@@ -75,7 +75,7 @@ func TestReceiptService_GetPoints_Subsequent(t *testing.T) {
 	mockRepo := &MockRepo{}
 	mockRulesService := &MockRulesService{}
 
-	service := &ReceiptService{mockRulesService, mockRepo}
+	service := &service{mockRulesService, mockRepo}
 
 	initialPoints := 50
 	// return receipt with nil points
@@ -97,7 +97,7 @@ func TestReceiptService_GetPoints_BadId(t *testing.T) {
 	mockRepo := &MockRepo{}
 	mockRulesService := &MockRulesService{}
 
-	service := &ReceiptService{mockRulesService, mockRepo}
+	service := &service{mockRulesService, mockRepo}
 
 	mockRepo.On("Get", "test").Return(nil, &receipt_repo.NoReceiptFoundError{Id: "test"})
 

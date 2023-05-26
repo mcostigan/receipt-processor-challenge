@@ -7,27 +7,31 @@ import (
 	"receipt-processor-challeng/src/rules"
 )
 
-type ReceiptService struct {
-	rulesService rules.RulesServiceInterface
+type ReceiptService interface {
+	ProcessReceipt(receipt *model.Receipt) string
+	GetPoints(id string) (int, error)
+}
+type service struct {
+	rulesService rules.ServiceInterface
 	receiptRepo  receipt_repo.ReceiptRepo
 }
 
-func NewReceiptService() *ReceiptService {
-	return &ReceiptService{
+func NewReceiptService() ReceiptService {
+	return &service{
 		rulesService: rules.NewRulesService(),
 		receiptRepo:  receipt_repo.NewInMemoryReceiptRepo(),
 	}
 }
 
 // ProcessReceipt Assigns a unique ID to the receipt and persists (via the repository)
-func (service *ReceiptService) ProcessReceipt(receipt *model.Receipt) string {
+func (service *service) ProcessReceipt(receipt *model.Receipt) string {
 	id := uuid.NewString()
 	receipt.Id = id
 	service.receiptRepo.Set(receipt)
 	return id
 }
 
-func (service *ReceiptService) GetPoints(id string) (int, error) {
+func (service *service) GetPoints(id string) (int, error) {
 	receipt, err := service.receiptRepo.Get(id)
 	if err != nil {
 		return -1, err
