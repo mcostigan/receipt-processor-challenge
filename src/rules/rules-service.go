@@ -12,7 +12,7 @@ type service struct {
 	rules []Rule
 }
 
-func NewRulesService() *service {
+func NewRulesService() ServiceInterface {
 	return &service{[]Rule{
 		&RetailerLengthRule{},
 		&RoundDollarAmountRule{},

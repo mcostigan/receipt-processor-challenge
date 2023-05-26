@@ -24,7 +24,7 @@ func TestInMemoryReceiptRepo_Get_ReturnsReceipt(t *testing.T) {
 }
 
 func TestInMemoryReceiptRepo_Set_NewReceipt(t *testing.T) {
-	repo := NewInMemoryReceiptRepo()
+	repo := NewInMemoryReceiptRepo().(*inMemoryReceiptRepo)
 
 	r := repo.Set(&model.Receipt{Id: "test"})
 

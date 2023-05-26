@@ -15,7 +15,7 @@ type inMemoryReceiptRepo struct {
 	receipts map[string]*model.Receipt
 }
 
-func NewInMemoryReceiptRepo() *inMemoryReceiptRepo {
+func NewInMemoryReceiptRepo() ReceiptRepo {
 	return &inMemoryReceiptRepo{map[string]*model.Receipt{}}
 }
 
