@@ -1,0 +1,8 @@
+services:
+  receipt-processor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: receipt-processor
+    ports:
+      - "8080:8080"
