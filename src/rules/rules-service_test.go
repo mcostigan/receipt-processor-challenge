@@ -10,10 +10,18 @@ import (
 
 func TestReceiptPointingExample1(t *testing.T) {
 	receiptJson, _ := os.Open("../../examples/example-receipt-1.json")
-	defer receiptJson.Close()
+	defer func(receiptJson *os.File) {
+		err := receiptJson.Close()
+		if err != nil {
+
+		}
+	}(receiptJson)
 
 	var exampleReceipt model.Receipt
-	json.NewDecoder(receiptJson).Decode(&exampleReceipt)
+	err := json.NewDecoder(receiptJson).Decode(&exampleReceipt)
+	if err != nil {
+		return
+	}
 
 	service := NewRulesService()
 	points := service.PointReceipt(&exampleReceipt)
@@ -23,10 +31,18 @@ func TestReceiptPointingExample1(t *testing.T) {
 
 func TestReceiptPointingExample2(t *testing.T) {
 	receiptJson, _ := os.Open("../../examples/example-receipt-2.json")
-	defer receiptJson.Close()
+	defer func(receiptJson *os.File) {
+		err := receiptJson.Close()
+		if err != nil {
+
+		}
+	}(receiptJson)
 
 	var exampleReceipt model.Receipt
-	json.NewDecoder(receiptJson).Decode(&exampleReceipt)
+	err := json.NewDecoder(receiptJson).Decode(&exampleReceipt)
+	if err != nil {
+		return
+	}
 
 	service := NewRulesService()
 	points := service.PointReceipt(&exampleReceipt)
