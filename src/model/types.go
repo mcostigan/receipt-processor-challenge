@@ -56,6 +56,9 @@ func (price *PriceInCents) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// UnmarshalJSON
+//
+//	Converts a YYYY-MM-DD string, as received in the receipt, to a time object**
 func (date *Date) UnmarshalJSON(data []byte) error {
 	str := bytesToString(data)
 	t, err := time.Parse("2006-01-02", str)
@@ -67,6 +70,9 @@ func (date *Date) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// UnmarshalJSON
+//
+//	Converts a hh:mm string, as received in the receipt, to a time object**
 func (purchaseTime *Time) UnmarshalJSON(data []byte) error {
 	str := bytesToString(data)
 	t, err := time.Parse("15:04", str)

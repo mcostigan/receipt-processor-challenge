@@ -42,8 +42,6 @@ func (repo *inMemoryReceiptRepo) Get(id string) (*model.Receipt, error) {
 	return receipt, nil
 }
 
-// TODO throw error if Id is null
-
 // Set Saves an instance of receipt, keyed on its id
 func (repo *inMemoryReceiptRepo) Set(receipt *model.Receipt) *model.Receipt {
 	mutex.Lock()

@@ -28,7 +28,7 @@ func (controller *receiptController) HandleProcessReceipts(c *gin.Context) {
 
 	id := controller.receiptService.ProcessReceipt(&newReceipt)
 
-	c.IndentedJSON(http.StatusOK, model.ProcessReceiptReturn{id})
+	c.IndentedJSON(http.StatusOK, model.ProcessReceiptReturn{Id: id})
 }
 
 func (controller *receiptController) HandleGetPoints(c *gin.Context) {
@@ -48,5 +48,5 @@ func (controller *receiptController) HandleGetPoints(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, model.GetPointsReturn{points})
+	c.IndentedJSON(http.StatusOK, model.GetPointsReturn{Points: points})
 }

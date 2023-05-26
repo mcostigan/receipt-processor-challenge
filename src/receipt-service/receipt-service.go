@@ -31,6 +31,9 @@ func (service *service) ProcessReceipt(receipt *model.Receipt) string {
 	return id
 }
 
+// GetPoints Returns the number of points earned on a receipt.
+// If the receipt has never been queried before, the amount is calculated and stored with the receipt.
+// Else, the value is fetched via.
 func (service *service) GetPoints(id string) (int, error) {
 	receipt, err := service.receiptRepo.Get(id)
 	if err != nil {

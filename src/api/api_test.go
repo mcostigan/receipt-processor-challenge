@@ -15,12 +15,33 @@ import (
 func Test_ReceiptPoints_BadId(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	router := GetRouter()
-	req, _ := http.NewRequest("GET", "/receipts/bad_id/points", nil)
+	server := httptest.NewServer(router)
+	defer server.Close()
 
-	recorder := httptest.NewRecorder()
-	router.ServeHTTP(recorder, req)
+	body, err := os.Open("bad-json.json")
+	if err != nil {
+		t.Error()
+		return
+	}
+	defer func(body *os.File) {
+		err := body.Close()
+		if err != nil {
 
-	assert.Equal(t, http.StatusNotFound, recorder.Code)
+		}
+	}(body)
+
+	resp, err := http.Get(server.URL + "/receipts/bad_id/points")
+	if err != nil {
+		t.Error()
+	}
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+
+		}
+	}(resp.Body)
+
+	assert.Equal(t, "404 Not Found", resp.Status)
 }
 
 func Test_ProcessReceipt_BadRequest(t *testing.T) {
